@@ -55,8 +55,10 @@ public class CS106A_ScrabbleMkIII extends ConsoleProgram
 		StringTokenizer tokenizedString = new StringTokenizer(word);
 		while (tokenizedString.hasMoreTokens()){
 			String token = tokenizedString.nextToken();
-			if (!token.equals(' ')){
-				
+			boolean firstCase = (int)token.charAt(0) < 65 || (int)token.charAt(0) > 90;
+			boolean secondCase = (int)token.charAt(0) < 97 || (int)token.charAt(0) > 122;
+			if (firstCase && secondCase){
+				return false;
 			}
 		}
 		return true;
