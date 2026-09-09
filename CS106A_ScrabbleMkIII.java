@@ -16,6 +16,10 @@ import java.util.*;
 public class CS106A_ScrabbleMkIII extends ConsoleProgram
 {
 	/** Immutable Instance Variables (named constants) */
+	char[] onePtCollection = {'A','E','I','L','N','O','R','S','T','U'};
+	char[] twoPtCollection = {'D','G'};
+	char[] threePtCollection = {'B','C','M','P'};
+	char[] fourPtCollection = {};
 	
 	public void run()
 	{
@@ -57,9 +61,7 @@ public class CS106A_ScrabbleMkIII extends ConsoleProgram
 			String token = tokenizedString.nextToken();
 			boolean firstCase = (int)token.charAt(0) < 65 || (int)token.charAt(0) > 90;
 			boolean secondCase = (int)token.charAt(0) < 97 || (int)token.charAt(0) > 122;
-			if (firstCase && secondCase){
-				return false;
-			}
+			if (firstCase && secondCase){ return false; }
 		}
 		return true;
 	}
@@ -67,7 +69,10 @@ public class CS106A_ScrabbleMkIII extends ConsoleProgram
 	
 	private void handlePointsFor(String word)
 	{
-		StringTokenizer tokenizedString = new StringTokenizer(word);
+		StringTokenizer tokenizedStr = new StringTokenizer(word);
+		while (tokenizedStr.hasMoreTokens()){
+			Letter token = (Letter) tokenizedStr.nextToken().charAt(0);
+		}
 	}
 	
 	/** Mutable Instance Variables  */
