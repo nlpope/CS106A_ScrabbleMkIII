@@ -16,17 +16,10 @@ import java.util.*;
 public class CS106A_ScrabbleMkIII extends ConsoleProgram
 {
 	/** Immutable Instance Variables (named constants) */
-	char[] onePtCollection = {'A','E','I','L','N','O','R','S','T','U'};
-	char[] twoPtCollection = {'D','G'};
-	char[] threePtCollection = {'B','C','M','P'};
-	char[] fourPtCollection = {};
+	private static final String SENTINEL = "ENDGAME";
 	
 	public void run()
 	{
-		//make an instance var to keep track of the points
-//		make an enum of the alphabet w a val pt associated w
-		//..each letter (see pg 286 in art & sci text)
-		//
 		introduceApp();
 		askClientForInput();
 	}
@@ -38,43 +31,57 @@ public class CS106A_ScrabbleMkIII extends ConsoleProgram
 				"known as Scrabble, where each capital letter " +
 				"in the English alphabet is awarded a point " +
 				"inversely related to its frequency in English words.");
+		pause(1000);
+		println("You can play indefinitely or type '" + SENTINEL +"' to end " +
+				"the program.");
 		pause(2000);
 	}
 	
 	
 	private void askClientForInput()
 	{
-		String clientInput = readLine("Enter a word. No spaces or numbers: ");
-		if (checkClientInputValidityFor(clientInput)){
-			handlePointsFor(clientInput);
-		} else { 
-			println("Invalid input. Please trya again, omitting spaces and numbers.");
-			askClientForInput();
+		while(true){
+			String clientInput = readLine("Enter a word. No spaces or numbers: ");
+			if (clientInput.equals(SENTINEL)) { 
+				println("total points: " + totalPoints + ".");
+				println("goodbye.");
+				return; 
+			}
+			if (checkClientInputValidityFor(clientInput)){
+				for (int i = 0; i < clientInput.length(); i++){
+					handlePointsFor(clientInput.charAt(i));
+				}
+				println("That word is worth " + points + " points.");
+				totalPoints += points;
+				points = 0;
+			} else { 
+				println("Invalid input. Please trya again, omitting spaces and numbers.");
+				askClientForInput();
+			}
 		}
 	}
 	
 	
 	private boolean checkClientInputValidityFor(String word)
 	{
-		StringTokenizer tokenizedString = new StringTokenizer(word);
-		while (tokenizedString.hasMoreTokens()){
-			String token = tokenizedString.nextToken();
-			boolean firstCase = (int)token.charAt(0) < 65 || (int)token.charAt(0) > 90;
-			boolean secondCase = (int)token.charAt(0) < 97 || (int)token.charAt(0) > 122;
+		for (int i = 0; i < word.length(); i++){
+			boolean firstCase = word.charAt(i) < 65 || word.charAt(i) > 90;
+			boolean secondCase = word.charAt(i) < 97 || word.charAt(i) > 122;
 			if (firstCase && secondCase){ return false; }
 		}
 		return true;
 	}
 	
 	
-	private void handlePointsFor(String word)
+	private void handlePointsFor(Character clientLetter)
 	{
-		StringTokenizer tokenizedStr = new StringTokenizer(word);
-		while (tokenizedStr.hasMoreTokens()){
-			Letter token = (Letter) tokenizedStr.nextToken().charAt(0);
+		for (Letter l: Letter.values()){
+			if (clientLetter.equals(l.name().charAt(0))){ points += l.pointValue; }
+			else { points += 0; }
 		}
 	}
 	
 	/** Mutable Instance Variables  */
 	private int points = 0;
+	private int totalPoints = 0;
 }
